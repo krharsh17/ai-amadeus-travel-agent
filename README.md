@@ -12,6 +12,6 @@ To run this project:
 6. Go to the [My Apps](https://developers.amadeus.com/my-apps) section on the Amadeus for Developers dashboard and create a new app. Once the app is created, copy your API key and secret. 
 7. In the .env file, populate the value of the API key from OpenAI and the API key and secret from Amadeus.
 8. Run `npm i` to install the project's dependencies.
-9. Run `npm run dev` to start the development server.
+9. Run `node index.cjs` in one terminal to start the API server and `npm run dev` in another terminal to start the frontend app.
 
 You can now run the app and develop it while following the part 2 of the series. To take a look at the finished code, switch to the `finished` branch. Happy coding!
