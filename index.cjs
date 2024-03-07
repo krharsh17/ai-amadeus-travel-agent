@@ -56,7 +56,7 @@ const paymentDetails = {
       cardNumber: "4111111111111111",
       expiryDate: "2026-01"
     }
-  }
+}
 
 const getFlights = async (iataCode) => {
 
@@ -72,7 +72,7 @@ const getFlights = async (iataCode) => {
     }
 }
 
-const bookFlight = async (option, passengerCount) => {
+const bookFlight = async (option) => {
     try {
 
         const offersResponse = await amadeus.shopping.flightOffersSearch.get({
@@ -80,7 +80,7 @@ const bookFlight = async (option, passengerCount) => {
             destinationLocationCode: flightOptions[option].destination,
             departureDate: flightOptions[option].departureDate,
             returnDate: flightOptions[option].returnDate,
-            adults: "" + passengerCount,
+            adults: "1",
             max: 1
         });
 
@@ -261,7 +261,7 @@ app.post('/chat', async (req, res) => {
             "type": "function",
             "function": {
                 "name": "bookFlight",
-                "description": "Book a flight based on the chosen origin location, destination location, date of travel, and number of passengers by the user",
+                "description": "Book a flight based on the chosen option by the user",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -269,12 +269,8 @@ app.post('/chat', async (req, res) => {
                             "type": "number",
                             "description": "The number of the option chosen by the user",
                         },
-                        "passengerCount": {
-                            "type": "string",
-                            "description": "The number of passengers as inputted by the user",
-                        },
                     },
-                    "required": ["option", "passengerCount"],
+                    "required": ["option"],
                 },
             }
         },
@@ -305,7 +301,7 @@ app.post('/chat', async (req, res) => {
                 }
                 case "bookFlight": {
                     const args = JSON.parse(response.data.choices[0].message.tool_calls[0].function.arguments)
-                    await bookFlight(args.option - 1, args.passengerCount)
+                    await bookFlight(args.option - 1)
                     res.json({ message: { role: "assistant", content: "Your flight has been booked successfully. Would you like to book a hotel in " + flightOptions[args.option - 1].destination + " for your stay?" } })
                     break;
                 }
