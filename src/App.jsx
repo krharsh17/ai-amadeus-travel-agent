@@ -44,6 +44,7 @@ function App() {
 
   const sendMessage = async () => {
     if (input.trim()) {
+      setIsLoading(true)
       const newMessage = { role: 'user', content: input };
       setInput('');
 
@@ -65,12 +66,15 @@ function App() {
           const data = await response.json();
           const dataMsg = data.message;
           setMessages(responseMsg => [...responseMsg, dataMsg]);
+          setIsLoading(false)
         } else {
+          setIsLoading(false)
           console.error('Failed to send message to the server');
         }
 
         setIsLoading(false)
       } catch (error) {
+        setIsLoading(false)
         console.error('Error:', error);
         setIsLoading(false)
       }

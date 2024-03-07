@@ -53,7 +53,7 @@ const paymentDetails = {
     method: "creditCard",
     card: {
       vendorCode: "VI",
-      cardNumber: "0000000000000000",
+      cardNumber: "4111111111111111",
       expiryDate: "2026-01"
     }
   }
@@ -116,8 +116,6 @@ const bookFlight = async (option, passengerCount) => {
 
 const getSummarizedFlightList = async (formattedFlightData, messages) => {
 
-    console.log(formattedFlightData)
-
     if (formattedFlightData === "Error") {
         return { "role": "assistant", "content": "There is a problem with your departure city. Can you choose a different one, please?" };
     }
@@ -166,7 +164,27 @@ const findHotelOffers = async (hotelId, checkInDate, checkoutDate) => {
 const bookHotel = async (location, departureDate, returnDate) => {
     const hotels = await listHotels(location)
 
-    const offers = await findHotelOffers(hotels[0].hotelId, departureDate, returnDate)
+    let offers = []
+
+    for (let i=0; i<hotels.length; i++) {
+        const item = hotels[i]
+        try {
+            // Optionally add a wait function here to avoid overloading the Amadeus API: 
+            // const delay = ms => new Promise(res => setTimeout(res, ms)); await delay(2000);
+
+            offers = await findHotelOffers(item.hotelId, departureDate, returnDate)
+
+        } catch (e) {
+            console.log(e)
+        }
+
+        if (offers.length !== 0)
+            break
+    }
+
+    if (offers.length === 0) {
+        return "Sorry!, we could not find any hotel rooms available for your stay dates"
+    }
 
     const offer = offers[0].offers[0]
 
@@ -190,7 +208,6 @@ const bookHotel = async (location, departureDate, returnDate) => {
         }
       }));
 
-      console.log(response)
       return offer.room.type + " type room in " + offers[0].hotel.name + " for " + offer.guests.adults + " people. Booking confirmation ID is: " + response.data[0].providerConfirmationId
 }
 
@@ -229,11 +246,11 @@ app.post('/chat', async (req, res) => {
                         },
                         "departureDate": {
                             "type": "string",
-                            "description": "The departure date of the user's flight",
+                            "description": "The departure date of the user's flight in the format YYYY-MM-DD",
                         },
                         "returnDate": {
                             "type": "string",
-                            "description": "The retrun date of the user's flight",
+                            "description": "The return date of the user's flight in the format YYYY-MM-DD",
                         },
                     },
                     "required": ["location", "departureDate"],
