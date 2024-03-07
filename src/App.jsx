@@ -10,7 +10,7 @@ function App() {
 
   useMemo(() => {
     const sendInitialMessage = async () => {
-
+      setIsLoading(true)
       try {
         const response = await fetch('/chat', {
           method: 'POST',
@@ -27,8 +27,12 @@ function App() {
         } else {
           console.error('Failed to send initial context to the server');
         }
+
+        setIsLoading(false)
       } catch (error) {
+
         console.error('Error:', error);
+        setIsLoading(false)
       }
     };
 
@@ -47,6 +51,7 @@ function App() {
       setMessages(updatedMessages);
 
       try {
+        setIsLoading(true)
         const response = await fetch('/chat', {
           method: 'POST',
           headers: {
@@ -63,8 +68,11 @@ function App() {
         } else {
           console.error('Failed to send message to the server');
         }
+
+        setIsLoading(false)
       } catch (error) {
         console.error('Error:', error);
+        setIsLoading(false)
       }
     }
   }
