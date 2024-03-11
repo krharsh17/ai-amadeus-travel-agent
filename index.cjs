@@ -261,7 +261,7 @@ app.post('/chat', async (req, res) => {
             "type": "function",
             "function": {
                 "name": "bookFlight",
-                "description": "Book a flight based on the chosen option by the user",
+                "description": "Book a flight based on the option chosen by the user",
                 "parameters": {
                     "type": "object",
                     "properties": {
