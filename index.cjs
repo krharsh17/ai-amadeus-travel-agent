@@ -183,7 +183,7 @@ const bookHotel = async (location, departureDate, returnDate) => {
     }
 
     if (offers.length === 0) {
-        return "Sorry! we could not find any hotel rooms available for your stay dates."
+        return "Sorry! We could not find any hotel rooms available for your stay dates."
     }
 
     const offer = offers[0].offers[0]
