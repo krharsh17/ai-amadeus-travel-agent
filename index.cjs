@@ -169,7 +169,7 @@ const bookHotel = async (location, departureDate, returnDate) => {
     for (let i=0; i<hotels.length; i++) {
         const item = hotels[i]
         try {
-            // Optionally add a wait function here to avoid overloading the Amadeus API: 
+            // Optionally add a wait function here to avoid overloading the Amadeus for Developers API: 
             // const delay = ms => new Promise(res => setTimeout(res, ms)); await delay(2000);
 
             offers = await findHotelOffers(item.hotelId, departureDate, returnDate)
@@ -183,7 +183,7 @@ const bookHotel = async (location, departureDate, returnDate) => {
     }
 
     if (offers.length === 0) {
-        return "Sorry!, we could not find any hotel rooms available for your stay dates"
+        return "Sorry! we could not find any hotel rooms available for your stay dates."
     }
 
     const offer = offers[0].offers[0]
