@@ -308,7 +308,7 @@ app.post('/chat', async (req, res) => {
                 case "bookHotel": {
                     const args = JSON.parse(response.data.choices[0].message.tool_calls[0].function.arguments)
                     const hotelDetails = await bookHotel(args.location, args.departureDate, args.returnDate)
-                    res.json({ message: { role: "assistant", content: "Your hotel has been been successfully booked. Here are the details: " + hotelDetails + ". Please let me know if you need anything else!" } })
+                    res.json({ message: { role: "assistant", content: "Your hotel has been successfully booked. Here are the details: " + hotelDetails + ". Please let me know if you need anything else!" } })
                     break;
                 }
             }
